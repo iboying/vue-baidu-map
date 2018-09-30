@@ -46,6 +46,10 @@ export default {
     },
     message: {
       type: String
+    },
+    resizable: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -91,7 +95,7 @@ export default {
       this.originInstance.redraw()
     },
     load () {
-      const {BMap, map, show, title, width, height, maxWidth, offset, autoPan, closeOnClick, message, maximize, bindObserver, $parent} = this
+      const {BMap, map, show, title, width, height, maxWidth, offset, autoPan, closeOnClick, message, maximize, resizable, bindObserver, $parent} = this
       const $content = this.$el
       const overlay = new BMap.InfoWindow($content, {
         width,
@@ -112,7 +116,9 @@ export default {
       ;[].forEach.call($content.querySelectorAll('img'), $img => {
         $img.onload = () => overlay.redraw()
       })
-      bindObserver()
+      if (resizable) {
+        bindObserver()
+      }
       this.$container = $parent.originInstance && $parent.originInstance.openInfoWindow ? $parent.originInstance : map
       show && this.openInfoWindow()
     },
